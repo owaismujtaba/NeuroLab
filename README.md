@@ -1,1 +1,1 @@
-# NeuroLab
+# NeuroIntefaceingLab

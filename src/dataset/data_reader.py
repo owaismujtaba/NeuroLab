@@ -1,10 +1,17 @@
 import numpy as np
 from pathlib import Path
+import numpy as np
+import scipy.signal
+from scipy import fftpack
+from scipy.signal import  hilbert
+from mne.filter import filter_data
 
 from src.utils.graphics import styled_print
 import config as config
 
 import pdb
+
+hilbert3 = lambda x: hilbert(x, fftpack.next_fast_len(len(x)),axis=0)[:len(x)]
 
 
 class DataReader:
@@ -28,6 +35,32 @@ class DataReader:
         self.words = np.load(Path(dir, f'P{self.subject_id}_stimuli.npy'))
         self.channels = np.load(Path(dir, f'P{self.subject_id}_channels.npy'))
         
+   
+
+
+    def extract_freq_band_envelope(self):
+        sr = config.EEG_SR
+        data = scipy.signal.detrend(self.eeg, axis=0)
+
+        data = filter_data(data.T, sr, 70, 170, method="iir").T
+        data = filter_data(data.T, sr, 102, 98, method="iir").T
+        data = filter_data(data.T, sr, 152, 148, method="iir").T
+
+        data = np.abs(hilbert3(data))
+
+        # Compute the number of windows
+        num_windows = int(np.floor((data.shape[0] - config.WIN_LENGHT * sr) / (config.FRAME_SHIFT * sr))) + 1
+        feat = np.zeros((num_windows, data.shape[1]))
+
+        # Extract windowed mean features
+        for win in range(num_windows):
+            start = int(np.floor(win * config.FRAME_SHIFT * sr))
+            stop = int(start + config.WIN_LENGHT * sr)
+            feat[win, :] = np.mean(data[start:stop, :], axis=0)
+
+        return feat
+
+
 
     def _electrode_shaft_referencing(self):
         """

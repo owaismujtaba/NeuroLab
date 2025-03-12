@@ -31,8 +31,10 @@ class DataReader:
 
         self._read_data()
         self._clean_eeg()
-        self._electrode_shaft_referencing()
+        if config.REF == 'ESR':
+            self._electrode_shaft_referencing()
         self._audio_processor()
+        self.extract_eeg_and_audio_features()
         
     def _read_data(self): 
         dir = config.DATA_DIR

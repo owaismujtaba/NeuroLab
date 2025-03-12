@@ -31,9 +31,9 @@ class ModelTrainer:
         print(f"🔧 Starting Model Training with {k}-Fold Cross Validation 🔧")
         print(f"🟢 Initial Data Shapes: X={X.shape}, y={y.shape}")
 
-        kf = KFold(n_splits=k, shuffle=False, random_state=42)  # K-Fold CV
+        kf = KFold(n_splits=k, shuffle=False)  # K-Fold CV
         fold_scores = []
-
+        
         for fold, (train_idx, val_idx) in enumerate(kf.split(X)):
             print(f"\n🔄 Fold {fold + 1}/{k} in K-Fold CV")
 

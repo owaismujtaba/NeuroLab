@@ -180,9 +180,10 @@ class DataReader:
             eeg_stacked_features = eeg_stacked_features[:t_len,:]
             target = target[:t_len]
 
+        self.channels = np.array(self.channels)
         self.target = target
         self.eeg_features = eeg_stacked_features
-        self.feature_names = self._name_vector(np.array(self.channels))
+        self.feature_names = self._name_vector(self.channels)
         self.channels = self.channels.flatten()
         self.audio_features = spectrograms
         

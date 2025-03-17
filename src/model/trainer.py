@@ -86,7 +86,7 @@ class ModelTrainer:
         r2 = r2_score(y_flatten, predicted_flat)
         pcc =calculate_pcc_spectrgorams(predictions, y)
 
-        print(f"📊 RMSE {rmse}, MSE {mse}, 'R2 {r2}, PCC {pcc}")
+        print(f"📊 RMSE: {rmse}, MSE: {mse}, 'R2: {r2}, PCC: {pcc}")
 
         np.save(str(Path(self.model_dir, f'Fold_{fold}_metrics.npy')), np.array([mse, rmse, r2, pcc]))
         self.metrices = [mse, rmse, r2, pcc]

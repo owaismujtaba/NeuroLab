@@ -9,7 +9,7 @@ from src.utils.utils import calculate_pcc_spectrgorams
 
 early_stopping = EarlyStopping(
     monitor='val_loss',   # Monitor validation loss
-    patience=30,    # Number of epochs to wait before stopping
+    patience=5,    # Number of epochs to wait before stopping
     restore_best_weights=True,  # Restore best weights when stopping
     verbose=1
 )
@@ -83,7 +83,7 @@ class NeuralNetwork:
         X_train = X_train.reshape(X_train.shape[0], -1)
         y_train = y_train.reshape(y_train.shape[0], -1)
         self.model.fit(X_train, y_train,
-            batch_size=32, 
+            batch_size=config.BATCH_SIZE, 
             epochs=config.EPOCHS, 
             validation_split=0.10,
             callbacks=[early_stopping]

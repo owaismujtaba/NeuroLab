@@ -33,4 +33,4 @@ def training_pipeline(subject_id='21'):
 
 for subject in range(21,31 ):
     training_pipeline(subject_id=str(subject))
-    break
+    

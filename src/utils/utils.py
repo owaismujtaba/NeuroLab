@@ -2,6 +2,8 @@ import numpy as np
 from scipy.stats import pearsonr
 import pdb
 
+from src.utils.graphics import styled_print
+
 def calculate_pcc_spectrgorams(pred, actual):
     """
         Computes the mean Pearson correlation coefficient (PCC) across spectral bins 
@@ -22,7 +24,7 @@ def calculate_pcc_spectrgorams(pred, actual):
         actual_bin = actual[:, spectral_bin]
         r, p = pearsonr(pred_bin, actual_bin)
         pcc_values.append(r)
-    
+    styled_print('', f'Pred:{pred.shape}, Actual:{actual.shape}, PCC: {np.mean(pcc_values)}', 'red', panel=True)
     return np.mean(pcc_values)
     
 

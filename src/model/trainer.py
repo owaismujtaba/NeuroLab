@@ -84,7 +84,7 @@ class ModelTrainer:
         '''avergate the correlations across time and then avergate across samples'''
         rmse = np.sqrt(mse)
         r2 = r2_score(y_flatten, predicted_flat)
-        pcc =calculate_pcc_spectrgorams(predictions, y)
+        pcc = calculate_pcc_spectrgorams(predictions, y)
 
         print(f"📊 RMSE: {rmse}, MSE: {mse}, 'R2: {r2}, PCC: {pcc}")
 

@@ -30,4 +30,5 @@ def training_pipeline(subject_id='21'):
     eeg_features = z_score_normalize(eeg_features)
     trainer.train_model(model=model, X=eeg_features, y=audio_features)
 
-training_pipeline(subject_id='21')
+for subject in range(21,31 ):
+    training_pipeline(subject_id=str(subject))

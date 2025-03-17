@@ -7,10 +7,13 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import LeaveOneGroupOut
 
+
+
 import pdb
 
 import config as config
 from src.utils.graphics import styled_print
+from src.utils.utils import calculate_pcc_spectrgorams
 
 class ModelTrainer:
     def __init__(self, model_name, subject_id, val_size=0.15):
@@ -78,9 +81,10 @@ class ModelTrainer:
         predicted_flat = predictions.flatten()
         y_flatten = y.flatten()
         mse = mean_squared_error(y_flatten, predicted_flat)
+        '''avergate the correlations across time and then avergate across samples'''
         rmse = np.sqrt(mse)
         r2 = r2_score(y_flatten, predicted_flat)
-        pcc = np.corrcoef(y_flatten, predicted_flat)[0, 1]
+        pcc =calculate_pcc_spectrgorams(predictions, y)
 
         print(f"📊 RMSE {rmse}, MSE {mse}, 'R2 {r2}, PCC {pcc}")
 

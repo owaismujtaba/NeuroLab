@@ -66,6 +66,7 @@ class DataReader:
             data_esr[:, i] = self.eeg[:, i] - shaft_averages[shaft_name].squeeze()
 
         self.eeg = data_esr
+        print(self.eeg.shape)
 
     def _clean_eeg(self):
         styled_print('', 'Cleaning sEEG', 'green')
@@ -87,6 +88,7 @@ class DataReader:
         
         self.eeg =  np.transpose(np.array(clean_data,dtype="float64"))
         self.channels = clean_channels
+        print(self.eeg.shape)
 
     def _audio_processor(self):
        
@@ -124,9 +126,11 @@ class DataReader:
             stop = int(start + config.WIN_LENGHT * sr)
             feat[win, :] = np.mean(data[start:stop, :], axis=0)
         self.eeg_freq_band_features = feat
+        print(feat.shape)
         return feat
         
-    def extract_mel_spectrograms(self,audio):    
+    def extract_mel_spectrograms(self,audio):  
+        styled_print('', 'Audio Spectrograms', 'green')  
         num_windows=int(np.floor((audio.shape[0]-config.WIN_LENGHT*self.target_sr)/(config.FRAME_SHIFT*self.target_sr)))
         win = np.hanning(np.floor(config.WIN_LENGHT*self.target_sr + 1))[:-1]
         spectrogram = np.zeros((num_windows, int(np.floor(config.WIN_LENGHT*self.target_sr / 2 + 1))),dtype='complex')
@@ -141,6 +145,7 @@ class DataReader:
         spectrogram = (mfb.toLogMels(spectrogram)).astype('float')
 
         self.audio_spectrograms = spectrogram
+        print(self.audio_spectrograms.shape)
         return spectrogram
     
     def stack_features(self, features):
@@ -155,6 +160,7 @@ class DataReader:
             ef = features[i - config.MODEL_ORDER * config.STEP_SIZE : i + config.MODEL_ORDER * config.STEP_SIZE + 1 : config.STEP_SIZE, :]
             feat_stacked[f_num, :] = ef.flatten()
 
+        print(feat_stacked.shape)
         return feat_stacked
 
     def label_speech(self):

@@ -1,8 +1,9 @@
 from src.dataset.data_reader import DataReader
 from src.dataset.data_loader import DataLoader
 
-from src.model.model import NeuralNetwork
+from src.model.model import NeuralNetwork, RNNModel
 from src.model.trainer import ModelTrainer
+from src.utils.utils import normalize_eeg
 import pdb
 
 
@@ -22,10 +23,11 @@ def training_pipeline(subject_id='21'):
     '''
 
     trainer = ModelTrainer(
-        model_name='NeuralNetwrok',
+        model_name='NeuralNetwork',
         subject_id=subject_id
     )
-    eeg_features  = eeg_features.reshape(eeg_features.shape[0], eeg_features.shape[1], 1)
-    trainer.train_model(model=model, X=eeg_features, y=audio_features)
+    '''eeg_features  = eeg_features.reshape(eeg_features.shape[0], eeg_features.shape[1], 1)'''
+    eeg_features = normalize_eeg(eeg_features)
+    trainer.train_model(model=model, X=eeg_features[:100], y=audio_features[:100])
 
 training_pipeline(subject_id='21')

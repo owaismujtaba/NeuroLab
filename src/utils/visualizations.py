@@ -6,6 +6,8 @@ import seaborn as sns
 
 import config as config
 
+import pdb
+
 def plot_pcc_across_subjects(model_name='NeuralNetwork'):
 
     data_dir = config.MODEL_DIR
@@ -44,3 +46,32 @@ def plot_pcc_across_subjects(model_name='NeuralNetwork'):
     plt.ylabel("PCC")
     plt.savefig(f'{model_name}_pcc.png', dpi=800)
             
+
+
+def plot_spectrograms(actual, predictions):
+    # Plot the actual spectrogram
+
+    '''
+    plt.figure(figsize=(10, 6))
+    plt.subplot(1, 2, 1)
+    plt.imshow(actual, aspect='auto', origin='lower', cmap='viridis', interpolation='none')
+    plt.colorbar(label='Spectral intensity')
+    plt.title('Actual Spectrogram')
+    plt.xlabel('Spectral Bins')
+    plt.ylabel('Time Windows')
+
+    # Plot the predicted spectrogram
+    plt.subplot(1, 2, 2)
+    plt.imshow(predictions, aspect='auto', origin='lower', cmap='viridis', interpolation='none')
+    plt.colorbar(label='Spectral intensity')
+    plt.title('Predicted Spectrogram')
+    plt.xlabel('Spectral Bins')
+    plt.ylabel('Time Windows')
+
+    # Show the plots
+    plt.tight_layout()
+    plt.savefig('compariosn.png', dpi=600)
+    pdb.set_trace()'
+    '''''
+    np.save('actual.npy', actual)
+    np.save('predicted.npy', predictions)

@@ -1,12 +1,8 @@
 import os
 import numpy as np
-import pandas as pd
 from pathlib import Path
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import KFold
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import LeaveOneGroupOut
-
 
 
 import pdb
@@ -14,6 +10,7 @@ import pdb
 import config as config
 from src.utils.graphics import styled_print
 from src.utils.utils import calculate_pcc_spectrgorams
+from src.utils.visualizations import plot_spectrograms
 
 class ModelTrainer:
     def __init__(self, model_name, subject_id, val_size=0.15):
@@ -57,8 +54,10 @@ class ModelTrainer:
                 self.model_type = 'Reg'
 
             score = self.evaluate_model(X_val, y_val, fold)
+
             print(f"✅ Fold {fold + 1} Score: {score}")
             fold_scores.append(score)
+            
 
         fold_scores = np.array(fold_scores)
         avg_mse, avg_rmse, avg_r2, avg_pcc = np.mean(fold_scores, axis=0)
@@ -91,4 +90,6 @@ class ModelTrainer:
         np.save(str(Path(self.model_dir, f'Fold_{fold}_metrics.npy')), np.array([mse, rmse, r2, pcc]))
         self.metrices = [mse, rmse, r2, pcc]
         print(f"💾 Metrics values saved at: {str(Path(self.model_dir, f'Fold_{fold}_metrics.npy'))}")
+        
+        plot_spectrograms(y, predictions)
         return self.metrices

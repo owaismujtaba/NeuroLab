@@ -60,14 +60,14 @@ class RNNModel:
         ) 
 
 
-
-
-
 class NeuroInceptDecoder:
     def __init__(self, input_shape=(2247, ), output_shape=23, gru_units=64):
         self.output_shape = output_shape
         self.input_shape = input_shape
         self.gru_units = gru_units
+
+
+    def _create_model(self):
 
         inputs = Input(shape=(self.input_shape[0], 1))   # Add channel dimension (F, 1)
 
@@ -126,9 +126,13 @@ class NeuroInceptDecoder:
 
 class NeuralNetwork:
     def __init__(self, input_shape=(2247, ), output_shape=(23)):
+        self.input_shape = input_shape
+        self.output_shape = output_shape
+
+    def _create_model(self):
 
         self.model = keras.Sequential([
-            layers.Input(shape=input_shape),
+            layers.Input(shape=self.input_shape),
             layers.Dense(64, activation='relu'),
             layers.Dense(128, activation='relu'),
             layers.Dense(256, activation='relu'),
@@ -140,11 +144,12 @@ class NeuralNetwork:
             layers.Dense(256, activation='relu'),
             layers.Dense(128, activation='relu'),
             layers.Dense(128, activation='relu'),
-            layers.Dense(output_shape) 
+            layers.Dense(self.output_shape) 
         ])
         self.model.compile(optimizer='adam', loss='mse')
         
     def train(self, X_train, y_train):
+        self._create_model()
         X_train = X_train.reshape(X_train.shape[0], -1)
         y_train = y_train.reshape(y_train.shape[0], -1)
         self.model.fit(X_train, y_train,

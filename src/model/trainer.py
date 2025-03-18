@@ -40,6 +40,9 @@ class ModelTrainer:
             X_train, X_val = X[train_idx], X[val_idx]
             y_train, y_val = y[train_idx], y[val_idx]
 
+            print(train_idx)
+            print(val_idx)
+
             history = self.model.train(X_train, y_train)
 
             try:
@@ -91,5 +94,14 @@ class ModelTrainer:
         self.metrices = [mse, rmse, r2, pcc]
         print(f"💾 Metrics values saved at: {str(Path(self.model_dir, f'Fold_{fold}_metrics.npy'))}")
         
-        plot_spectrograms(y, predictions)
+        #plot_spectrograms(y, predictions)
+
+        output_dir = Path(config.CUR_DIR, 'Predictions', str(self.subjet_id))
+        pred_filepath = Path(output_dir, f'Predictions_Fold_{fold}.npy')
+        actual_filepath = Path(output_dir, f'Actual_Fold_{fold}.npy')
+
+        os.makedirs(output_dir, exist_ok=True)
+        np.save(pred_filepath, predictions)
+        np.save(actual_filepath, y)
+
         return self.metrices

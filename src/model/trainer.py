@@ -65,11 +65,18 @@ class ModelTrainer:
         fold_scores = np.array(fold_scores)
         avg_mse, avg_rmse, avg_r2, avg_pcc = np.mean(fold_scores, axis=0)
 
+        styled_print('', '-'*60, 'red')
+        styled_print('', f'Subject ID:  {self.subjet_id}', 'green', panel=True)
+        styled_print('', '-'*60, 'red')
+
+
         print("\n📊 Final Cross-Validation Results:")
         print(f"🔹 Average RMSE: {avg_rmse:.4f}")
         print(f"🔹 Average MSE: {avg_mse:.4f}")
         print(f"🔹 Average R² Score: {avg_r2:.4f}")
         print(f"🔹 Average PCC: {avg_pcc:.4f}")
+        styled_print('', '-'*60, 'red')
+        styled_print('', '-'*60, 'red')
 
    
     def evaluate_model(self, X, y, fold):

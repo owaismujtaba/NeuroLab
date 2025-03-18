@@ -113,6 +113,7 @@ class NeuroInceptDecoder:
         return layers.Concatenate(axis=-1)([conv_1x1, conv_3x3, conv_5x5, max_pool_conv])
 
     def train(self, X_train, y_train):
+        self._create_model()
         X_train = X_train.reshape(X_train.shape[0], self.input_shape[0], 1)
         y_train = y_train.reshape(y_train.shape[0], -1)
         self.model.fit(X_train, y_train,
@@ -130,7 +131,6 @@ class NeuralNetwork:
         self.output_shape = output_shape
 
     def _create_model(self):
-
         self.model = keras.Sequential([
             layers.Input(shape=self.input_shape),
             layers.Dense(64, activation='relu'),

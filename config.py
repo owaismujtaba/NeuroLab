@@ -20,3 +20,6 @@ N_FILTERS = 23
 
 EPOCHS = 500
 BATCH_SIZE = 512
+
+
+TRAIN_MODEL = 'NeuralNetwork'

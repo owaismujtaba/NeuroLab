@@ -4,6 +4,7 @@ from tensorflow.keras import layers, models
 from tensorflow.keras import layers, Sequential
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras import layers, Model, Input
+from sklearn.linear_model import LinearRegression
 
 import pdb
 
@@ -158,3 +159,27 @@ class NeuralNetwork:
             validation_split=0.10,
             callbacks=[early_stopping]
         )
+
+    
+
+
+class LinearRegressionModel:
+    def __init__(self, input_shape=(2247,), output_shape=(23,)):
+        self.input_shape = input_shape
+        self.output_shape = output_shape
+        
+
+    def _create_model(self):
+        self.model = LinearRegression()
+
+
+    def train(self, X_train, y_train):
+        self._create_model()
+        X_train = X_train.reshape(X_train.shape[0], -1)
+        y_train = y_train.reshape(y_train.shape[0], -1)
+        
+        self.model.fit(X_train, y_train)   
+        
+    def predict(self, X_test):
+        X_test = X_test.reshape(X_test.shape[0], -1)
+        return self.model.predict(X_test)

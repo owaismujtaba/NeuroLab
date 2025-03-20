@@ -103,7 +103,7 @@ class ModelTrainer:
         
         #plot_spectrograms(y, predictions)
 
-        output_dir = Path(config.CUR_DIR, 'Predictions', str(self.subjet_id))
+        output_dir = Path(config.CUR_DIR, 'Predictions', str(self.subjet_id), self.name)
         pred_filepath = Path(output_dir, f'Predictions_Fold_{fold}.npy')
         actual_filepath = Path(output_dir, f'Actual_Fold_{fold}.npy')
 

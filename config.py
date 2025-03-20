@@ -22,4 +22,4 @@ EPOCHS = 500
 BATCH_SIZE = 512
 
 
-TRAIN_MODEL = 'NeuralNetwork'
+TRAIN_MODEL = 'LR'

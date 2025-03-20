@@ -1,9 +1,10 @@
 from src.dataset.data_reader import DataReader
 from src.dataset.data_loader import DataLoader
 
-from src.model.model import NeuralNetwork, NeuroInceptDecoder, LinearRegressionModel
+from src.model.model import NeuralNetwork, NeuroInceptDecoder, LinearRegressionModel, LSTMModel
 from src.model.trainer import ModelTrainer
 from src.utils.utils import z_score_normalize
+from src.utils.graphics import styled_print
 
 import config as config
 import pdb
@@ -18,15 +19,19 @@ def training_pipeline(subject_id='21'):
     
     
 
-    if config.TRAIN_MODEL == 'NeuralNetwork':
+    if config.TRAIN_MODEL == 'NN':
+        styled_print('', 'Using NN Model', 'cyan', panel=True)
+
         model = NeuralNetwork(input_shape=input_shape)
         
         trainer = ModelTrainer(
-            model_name='NeuralNetworkFinal',
+            model_name='NeuralNetwork',
             subject_id=subject_id
         )
 
     if config.TRAIN_MODEL == 'RNN':
+        styled_print('', 'Using LR Model', 'cyan', panel=True)
+
         model = NeuroInceptDecoder(input_shape=input_shape)
     
         trainer = ModelTrainer(
@@ -35,10 +40,20 @@ def training_pipeline(subject_id='21'):
         )
     
     if config.TRAIN_MODEL == 'LR':
+        styled_print('', 'Using LR Model', 'cyan', panel=True)
         model = LinearRegressionModel(input_shape=input_shape)
 
         trainer = ModelTrainer(
             model_name='LR',
+            subject_id=subject_id
+        )
+
+    if config.TRAIN_MODEL == 'LSTM':
+        styled_print('', 'Using LSTM Model', 'cyan', panel=True)
+        model = LSTMModel(input_shape=input_shape)
+
+        trainer = ModelTrainer(
+            model_name='LSTM',
             subject_id=subject_id
         )
 

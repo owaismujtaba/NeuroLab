@@ -27,8 +27,7 @@ def calculate_pcc_spectrgorams(pred, actual):
     styled_print('', f'Pred:{pred.shape}, Actual:{actual.shape}, PCC: {np.mean(pcc_values)}', 'red', panel=True)
     return np.mean(pcc_values)
     
-
-
+    
 def z_score_normalize(data: np.ndarray) -> np.ndarray:
     """
     Normalizes the input data using Z-score normalization.

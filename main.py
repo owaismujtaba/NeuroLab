@@ -25,7 +25,7 @@ def training_pipeline(subject_id='21'):
         model = NeuralNetwork(input_shape=input_shape)
         
         trainer = ModelTrainer(
-            model_name='NeuralNetwork',
+            model_name='NeuralNetwork_R_1',
             subject_id=subject_id
         )
 

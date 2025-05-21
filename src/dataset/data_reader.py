@@ -143,7 +143,7 @@ class DataReader:
         mfb = MelFilterBank(spectrogram.shape[1], config.N_FILTERS, self.target_sr)
         spectrogram = np.abs(spectrogram)
         spectrogram = (mfb.toLogMels(spectrogram)).astype('float')
-
+        
         self.audio_spectrograms = spectrogram
         print(self.audio_spectrograms.shape)
         return spectrogram
@@ -172,7 +172,6 @@ class DataReader:
         self.speech_labels = le.transform(labels)
 
     def extract_eeg_and_audio_features(self):
-        
         eeg_features = self.extract_freq_band_envelope()
         eeg_stacked_features = self.stack_features(eeg_features)
 
@@ -181,7 +180,7 @@ class DataReader:
         
         target = self.speech_labels[config.MODEL_ORDER*config.STEP_SIZE: self.speech_labels.shape[0]-config.MODEL_ORDER*config.STEP_SIZE]
         spectrograms =audio_features[config.MODEL_ORDER*config.STEP_SIZE: audio_features.shape[0]-config.MODEL_ORDER*config.STEP_SIZE]
-       
+
         if spectrograms.shape[0]!=eeg_stacked_features.shape[0]:
             t_len = np.min([spectrograms.shape[0],eeg_stacked_features.shape[0]])
             spectrograms = spectrograms[:t_len,:]

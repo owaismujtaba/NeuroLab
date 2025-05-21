@@ -4,13 +4,30 @@
 import scipy, numpy as np
 import scipy.io.wavfile as wavefile
 
-def stft(x, fftsize=1024, overlap=4):
+def stft1(x, fftsize=1024, overlap=4):
     """Returns short time fourier transform of a signal x
     """
     hop = int(fftsize / overlap)
     w = scipy.hanning(fftsize+1)[:-1]      # better reconstruction with this trick +1)[:-1]
     return np.array([np.fft.rfft(w*x[i:i+int(fftsize)]) for i in range(0, len(x)-int(fftsize), hop)])
+def stft(x, fftsize=1024, overlap=4):
+    """
+    Compute the Short-Time Fourier Transform of signal x.
 
+    Parameters:
+        x (1D array): Input signal
+        fftsize (int): FFT window size
+        overlap (int): Number of overlapping segments (e.g., 4 => 75% overlap)
+
+    Returns:
+        2D array: STFT matrix of shape (frames, fftsize//2 + 1)
+    """
+    hop = int(fftsize / overlap)
+    w = np.hanning(fftsize + 1)[:-1]  # Hann window with correct reconstruction
+    return np.array([
+        np.fft.rfft(w * x[i:i+fftsize])
+        for i in range(0, len(x) - fftsize, hop)
+    ])
 def istft(X, overlap=4):
     """Returns inverse short time fourier transform of a complex spectrum X
     """

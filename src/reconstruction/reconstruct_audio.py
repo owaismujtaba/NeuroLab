@@ -3,7 +3,7 @@ import os
 import librosa
 import soundfile as sf
 from pathlib import Path
-
+from src.utils.graphics import styled_print
 import config as config
 
 
@@ -22,13 +22,15 @@ class AudioReconstructor:
             frame_shift (float): Frame shift in seconds (e.g., 0.01 for 10ms).
             is_log_mel (bool): Set to True if the spectrogram is log-mel scaled.
         """
+        styled_print("📊", "Initializing Audio Reconstruction Class", "yellow", panel=True)
+
         self.sample_rate = 16000
         self.frame_shift = config.FRAME_SHIFT
         self.n_fft = 2048
         self.hop_length = int(self.frame_shift * self.sample_rate)
         self.directory = Path(config.CUR_DIR, 'Audios')
 
-    def reconstruct(self,subject_id, mel_spec, griffin_lim_iter=60, type='actual'):
+    def reconstruct(self,subject_id, mel_spec, griffin_lim_iter=30, type='actual'):
         """
         Reconstruct audio from a mel or log-mel spectrogram.
 
@@ -40,7 +42,9 @@ class AudioReconstructor:
         Returns:
             np.ndarray: Reconstructed audio waveform.
         """
-        mel_spec = mel_spec.T  # shape becomes (n_mels, time)
+        styled_print("", "Reconstruction started", "green", panel=False)
+
+        mel_spec = mel_spec.T  
 
         stft_mag = librosa.feature.inverse.mel_to_stft(
             mel_spec,
@@ -52,7 +56,9 @@ class AudioReconstructor:
             stft_mag,
             n_iter=griffin_lim_iter,
             hop_length=self.hop_length,
-            n_fft=self.n_fft
+            n_fft=self.n_fft,
+            init='random',       # Faster convergence than zero init
+            momentum=0.99        # Speed up convergence
         )
 
         os.makedirs(self.directory, exist_ok=True)

@@ -72,7 +72,7 @@ if config.TRANING:
 
 if config.RECONSTRUCT_AUDIO:
     reconstructor = AudioReconstructor()
-    pdb.set_trace()
+    
     for subject in range(1, 31):
         if subject<10:
             subject = f'0{subject}'
@@ -82,8 +82,10 @@ if config.RECONSTRUCT_AUDIO:
             mel_spec=data_loader.actual_spectrograms, 
             type='actual'
         )
+
         reconstructor.reconstruct(
             subject_id=subject, 
             mel_spec=data_loader.predicted_spectrograms, 
             type='predicted'
         )
+        break

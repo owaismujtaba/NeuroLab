@@ -130,7 +130,8 @@ class DataReader:
         return feat
         
     def extract_mel_spectrograms(self,audio):  
-        styled_print('', 'Audio Spectrograms', 'green')  
+        styled_print('', 'Audio Spectrograms', 'green')
+          
         num_windows=int(np.floor((audio.shape[0]-config.WIN_LENGHT*self.target_sr)/(config.FRAME_SHIFT*self.target_sr)))
         win = np.hanning(np.floor(config.WIN_LENGHT*self.target_sr + 1))[:-1]
         spectrogram = np.zeros((num_windows, int(np.floor(config.WIN_LENGHT*self.target_sr / 2 + 1))),dtype='complex')
@@ -141,6 +142,7 @@ class DataReader:
             spec = np.fft.rfft(win*a)
             spectrogram[w,:] = spec
         mfb = MelFilterBank(spectrogram.shape[1], config.N_FILTERS, self.target_sr)
+        pdb.set_trace()
         spectrogram = np.abs(spectrogram)
         spectrogram = (mfb.toLogMels(spectrogram)).astype('float')
         
@@ -177,7 +179,7 @@ class DataReader:
 
         audio_features = self.extract_mel_spectrograms(self.audio)
         self.label_speech()
-        
+        pdb.set_trace()
         target = self.speech_labels[config.MODEL_ORDER*config.STEP_SIZE: self.speech_labels.shape[0]-config.MODEL_ORDER*config.STEP_SIZE]
         spectrograms =audio_features[config.MODEL_ORDER*config.STEP_SIZE: audio_features.shape[0]-config.MODEL_ORDER*config.STEP_SIZE]
 

@@ -5,7 +5,8 @@ from src.model.model import NeuralNetwork, NeuroInceptDecoder, LinearRegressionM
 from src.model.trainer import ModelTrainer
 from src.utils.utils import z_score_normalize
 from src.utils.graphics import styled_print
-
+from src.reconstruction.reconstruct_audio import AudioReconstructor
+from src.reconstruction.spectrograms_loader import SpectrogramFoldLoader
 import config as config
 import pdb
 
@@ -61,8 +62,28 @@ def training_pipeline(subject_id='21'):
     eeg_features = z_score_normalize(eeg_features)
     trainer.train_model(model=model, X=eeg_features, y=audio_features)
 
-for subject in range(1, 31):
-    if subject<10:
-        subject = f'0{subject}'
-    training_pipeline(subject_id=str(subject))
-    
+
+if config.TRANING:
+    for subject in range(1, 31):
+        if subject<10:
+            subject = f'0{subject}'
+        training_pipeline(subject_id=str(subject))
+
+
+if config.RECONSTRUCT_AUDIO:
+    reconstructor = AudioReconstructor()
+    pdb.set_trace()
+    for subject in range(1, 31):
+        if subject<10:
+            subject = f'0{subject}'
+        data_loader = SpectrogramFoldLoader(subject_id=subject)
+        reconstructor.reconstruct(
+            subject_id=subject, 
+            mel_spec=data_loader.actual_spectrograms, 
+            type='actual'
+        )
+        reconstructor.reconstruct(
+            subject_id=subject, 
+            mel_spec=data_loader.predicted_spectrograms, 
+            type='predicted'
+        )

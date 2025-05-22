@@ -4,9 +4,11 @@ from pathlib import Path
 import config as config
 import os
 import glob
+from src.utils.graphics import styled_print
 
 class SpectrogramFoldLoader:
     def __init__(self, subject_id, model='LR'):
+        styled_print("📊", "Initializing Spectrogram Loader Class", "yellow", panel=True)
         self.subject_id = subject_id
         self.model = model
         self.spectrogram_dir = Path(config.CUR_DIR, 'Predictions', str(self.subject_id), model)

@@ -142,7 +142,6 @@ class DataReader:
             spec = np.fft.rfft(win*a)
             spectrogram[w,:] = spec
         mfb = MelFilterBank(spectrogram.shape[1], config.N_FILTERS, self.target_sr)
-        pdb.set_trace()
         spectrogram = np.abs(spectrogram)
         spectrogram = (mfb.toLogMels(spectrogram)).astype('float')
         
@@ -179,7 +178,6 @@ class DataReader:
 
         audio_features = self.extract_mel_spectrograms(self.audio)
         self.label_speech()
-        pdb.set_trace()
         target = self.speech_labels[config.MODEL_ORDER*config.STEP_SIZE: self.speech_labels.shape[0]-config.MODEL_ORDER*config.STEP_SIZE]
         spectrograms =audio_features[config.MODEL_ORDER*config.STEP_SIZE: audio_features.shape[0]-config.MODEL_ORDER*config.STEP_SIZE]
 

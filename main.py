@@ -7,6 +7,7 @@ from src.utils.utils import z_score_normalize
 from src.utils.graphics import styled_print
 from src.reconstruction.reconstruct_audio import AudioReconstructor
 from src.reconstruction.spectrograms_loader import SpectrogramFoldLoader
+
 import config as config
 import pdb
 
@@ -18,7 +19,15 @@ def training_pipeline(subject_id='21'):
     audio_features, eeg_features = loader.get_audio_and_eeg_features()
     input_shape = (eeg_features.shape[1],)
     
-    
+    if config.TRAIN_MODEL == 'NeuroIncept':
+        styled_print('', 'Using NN Model', 'cyan', panel=True)
+
+        model = NeuroInceptDecoder(input_shape=input_shape, output_shape=23)
+        
+        trainer = ModelTrainer(
+            model_name='NeuroIncept',
+            subject_id=subject_id
+        )
 
     if config.TRAIN_MODEL == 'NN':
         styled_print('', 'Using NN Model', 'cyan', panel=True)
